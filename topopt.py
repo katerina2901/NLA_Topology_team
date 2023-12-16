@@ -79,7 +79,7 @@ def main(nelx,nely,volfrac,penal,rmin,ft):
 	dv = np.ones(nely*nelx)
 	dc = np.ones(nely*nelx)
 	ce = np.ones(nely*nelx)
-	while change>0.01 and loop<2000:
+	while change>0.01 and loop<20:
 		loop=loop+1
 		# Setup and solve FE problem
 		sK=((KE.flatten()[np.newaxis]).T*(Emin+(xPhys)**penal*(Emax-Emin))).flatten(order='F')
@@ -115,7 +115,7 @@ def main(nelx,nely,volfrac,penal,rmin,ft):
 					loop,obj,(g+volfrac*nelx*nely)/(nelx*nely),change))
 	# Make sure the plot stays and that the shell remains	
 	plt.show()
-	raw_input("Press any key...")
+	print("Press any key...")
 #element stiffness matrix
 def lk():
 	E=1
