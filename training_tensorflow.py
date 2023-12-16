@@ -1,8 +1,10 @@
 from __future__ import print_function, division
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
+
 import os 
 
 import numpy as np
-import tensorflow as tf
 from keras.backend import learning_phase
 
 import conv_model
@@ -10,16 +12,20 @@ import sampler_utils
 import data_utils
 
 
-def train_model(model, dataset_path='top_dataset.h5', input_size=40, 
+
+dataset_path='output_dataset.h5'
+def train_model(model, dataset_path='output_dataset.h5', input_size=40, 
                 batch_size=64, epochs=30, vol_coeff=1.0, 
                 iter_sampler=sampler_utils.uniform_sampler(),
                 summary_prefix='summary', save_prefix='trained_models'):
         
     # main graph
-    input_data = tf.placeholder(tf.float32, (None, input_size, input_size, 2), name='input_data')
-    output_true = tf.placeholder(tf.float32, (None, input_size, input_size, 1), name='output_true')
-    learning_rate = tf.placeholder(tf.float32, [], name='learning_rate')
-    
+    input_data = tf.compat.v1.placeholder(tf.float32, (None, input_size, input_size, 2), name='input_data')
+    output_true = tf.compat.v1.placeholder(tf.float32, (None, input_size, input_size, 1), name='output_true')
+    learning_rate = tf.compat.v1.placeholder(tf.float32, [], name='learning_rate')
+    if options.dataset_path is None:
+        options.dataset_path = 'output_dataset.h5'
+
     with tf.variable_scope('topopt_model'):
         output_pred = model(input_data)
         
@@ -85,7 +91,7 @@ if __name__ == '__main__':
     parser = ArgumentParser()
 
     parser.add_argument('--dataset-path', type=str, dest='dataset_path', 
-                        help='path to `.h5` dataset', required=True)
+                        help='path to `.h5` dataset', required=False)
 
     parser.add_argument('--input-size', type=int, dest='input_size', 
                         help='size of the input tensor', default=40)
