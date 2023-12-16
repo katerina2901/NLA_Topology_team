@@ -1,0 +1,2 @@
+model_checkpoint_path: "VOL_COEFF=1.0"
+all_model_checkpoint_paths: "VOL_COEFF=1.0"
