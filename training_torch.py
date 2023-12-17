@@ -99,7 +99,7 @@ if __name__ == '__main__':
     options = parser.parse_args()
 
     # Model initialization
-    model = conv_model.build()  # Assuming ConvModel is defined in conv_model
+    model = conv_model.build()
 
     # Training
     train_model(model, 
