@@ -1,44 +1,73 @@
-from keras.models import Model
-from keras.layers import Input
-from keras.layers import Conv2D, MaxPooling2D, UpSampling2D
-from keras.layers import Dropout
-from keras.layers import concatenate
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
 
+class CustomModel(nn.Module):
+    def __init__(self):
+        super(CustomModel, self).__init__()
+
+        # Level 1
+        self.conv1_1 = nn.Conv2d(2, 16, kernel_size=3, padding=1)
+        self.conv1_2 = nn.Conv2d(16, 16, kernel_size=3, padding=1)
+
+        # Level 2
+        self.pool2_1 = nn.MaxPool2d(kernel_size=2, padding=0)
+        self.conv2_1 = nn.Conv2d(16, 32, kernel_size=3, padding=1)
+        self.drop2_1 = nn.Dropout(0.1)
+        self.conv2_2 = nn.Conv2d(32, 32, kernel_size=3, padding=1)
+
+        # Level 3
+        self.pool3_1 = nn.MaxPool2d(kernel_size=2, padding=0)
+        self.conv3_1 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
+        self.conv3_2 = nn.Conv2d(64, 64, kernel_size=3, padding=1)
+        self.conv3_3 = nn.Conv2d(64, 64, kernel_size=3, padding=1)
+        self.conv3_4 = nn.Conv2d(64, 64, kernel_size=3, padding=1)
+        self.up3_1 = nn.Upsample(scale_factor=2, mode='nearest')
+
+        # Level 2 again
+        self.conv2_3 = nn.Conv2d(96, 32, kernel_size=3, padding=1)
+        self.drop2_2 = nn.Dropout(0.1)
+        self.conv2_4 = nn.Conv2d(32, 32, kernel_size=3, padding=1)
+        self.up2_1 = nn.Upsample(scale_factor=2, mode='nearest')
+
+        # Level 1 again
+        self.conv1_3 = nn.Conv2d(48, 16, kernel_size=3, padding=1)
+        self.conv1_4 = nn.Conv2d(16, 16, kernel_size=3, padding=1)
+        self.output = nn.Conv2d(16, 1, kernel_size=3, padding=1)
+
+    def forward(self, x):
+        # Level 1
+        x1 = F.relu(self.conv1_1(x))
+        x1 = F.relu(self.conv1_2(x1))
+
+        # Level 2
+        x2 = self.pool2_1(x1)
+        x2 = F.relu(self.conv2_1(x2))
+        x2 = self.drop2_1(x2)
+        x2 = F.relu(self.conv2_2(x2))
+
+        # Level 3
+        x3 = self.pool3_1(x2)
+        x3 = F.relu(self.conv3_1(x3))
+        x3 = F.relu(self.conv3_2(x3))
+        x3 = F.relu(self.conv3_3(x3))
+        x3 = F.relu(self.conv3_4(x3))
+        x3 = self.up3_1(x3)
+
+        # Level 2 again
+        x2 = torch.cat([x2, x3], dim=1)
+        x2 = F.relu(self.conv2_3(x2))
+        x2 = self.drop2_2(x2)
+        x2 = F.relu(self.conv2_4(x2))
+        x2 = self.up2_1(x2)
+
+        # Level 1 again
+        x1 = torch.cat([x1, x2], dim=1)
+        x1 = F.relu(self.conv1_3(x1))
+        x1 = F.relu(self.conv1_4(x1))
+        output = torch.sigmoid(self.output(x1))
+        
+        return output
 
 def build():
-    input_ = Input(shape=(40, 40, 2), name='input_tensor')
-
-    # Level 1
-    conv1_1 = Conv2D(16, (3, 3), padding='same', activation='relu')(input_) 
-    conv1_2 = Conv2D(16, (3, 3), padding='same', activation='relu')(conv1_1)
-
-    #### Level 2
-    pool2_1 = MaxPooling2D((2, 2), padding='same')(conv1_2) 
-    conv2_1 = Conv2D(32, (3, 3), padding='same', activation='relu')(pool2_1)
-    drop2_1 = Dropout(0.1)(conv2_1)
-    conv2_2 = Conv2D(32, (3, 3), padding='same', activation='relu')(drop2_1)
-
-    ######### Level 3
-    pool3_1 = MaxPooling2D((2, 2), padding='same')(conv2_2) 
-    conv3_1 = Conv2D(64, (3, 3), padding='same', activation='relu')(pool3_1)
-    conv3_2 = Conv2D(64, (3, 3), padding='same', activation='relu')(conv3_1)
-
-    conv3_3 = Conv2D(64, (3, 3), padding='same', activation='relu')(conv3_2)
-    conv3_4 = Conv2D(64, (3, 3), padding='same', activation='relu')(conv3_3)
-    up3_1 = UpSampling2D()(conv3_4)
-
-    #### Level 2
-    concat2 = concatenate([conv2_2, up3_1], axis=3)
-    conv2_3 = Conv2D(32, (3, 3), padding='same', activation='relu')(concat2)
-    drop2_2 = Dropout(0.1)(conv2_3)
-    conv2_4 = Conv2D(32, (3, 3), padding='same', activation='relu')(drop2_2)
-    up2_1 = UpSampling2D()(conv2_4)
-
-    # Level 1
-    concat1 = concatenate([conv1_2, up2_1], axis=3)
-    conv1_3 = Conv2D(16, (3, 3), padding='same', activation='relu')(concat1)
-    conv1_4 = Conv2D(16, (3, 3), padding='same', activation='relu')(conv1_3)
-    output = Conv2D(1, (3, 3), padding='same', activation='sigmoid')(conv1_4)
-
-    model = Model(input_, output)
-    return model
+    return CustomModel()
