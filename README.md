@@ -1,6 +1,5 @@
 # Topology optimization process 
-Dataset used in "*Neural Networks for Topology Optimization*"
-[[code]([https://github.com/ISosnovik/nn4topopt](https://github.com/ISosnovik/top))]
+We use [TOP dataset](https://github.com/ISosnovik/top) to train the model.
 The dataset of topology optimization process. It contains the precise solutions of 10,000 randomly stated problems. Each object is a tensor of shape `(100, 40, 40)`: 100 iterations, `40×40` grid.
 
 ```latex
