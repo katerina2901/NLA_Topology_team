@@ -55,6 +55,8 @@ $$E_{i}(x_{i}) = E_{min} + x^{p}_{i}(E_{0} - E_{min}),$$
 
 where $p$ is some form of penalty that will drive the solution to discrete solid-void-values. Then discrete design variables is replaced with continious design variables which could be interpreted as the density of the material.
 
+$$E_{i}(x_{i}) = E_{min} + x^{p}_{i}(E_{0} - E_{min}),$$
+
 ## Neural Network for Topology Optimization
 
 We use [TOP dataset](https://github.com/ISosnovik/top) to train the model.
