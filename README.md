@@ -62,7 +62,7 @@ To start training the network you need to run: ```python training_torch.py --dat
 
 In our topology optimization process, it is possible to leverage an already trained unet NN. To implement this, refer to the methods demonstrated in methods_results.ipynb.
 
-## About NN:
+### Architecture of NN:
 
 * Initial Input Processing (Level 1): 
  
