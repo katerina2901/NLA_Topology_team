@@ -43,7 +43,7 @@ The straining or deformation modes of square Q4 element are shown in Figure 1. T
 
 $$\Pi^{*}(u) = \frac{1}{2}q^{T}\int_{\Omega}B^{T}CB\,d\Omega q - \alpha q^{T}\int_{\Omega}\overline{B}^{T}\overline{B}\,d\Omega q - q^{T}r.$$ 
 
-The force-displacement relationship for new Q4(\alpha^{*}) element, that is $Q4\alpha 5 \beta$, is then obtained as: $$(K-\alpha E\overline{K})q = r,$$ where $\alpha \leftarrow \alpha E/2.$ In compare with the normal force-displacement relationship for the Q4 element, $Kq=r$, the difference is the introduction of $\alpha E \overline{K},$ which is introduced in order to soften higher order modes of the Q4 element. 
+The force-displacement relationship for new Q4$(\alpha^{*})$ element, that is $Q4\alpha 5 \beta$, is then obtained as: $$(K-\alpha E\overline{K})q = r,$$ where $\alpha \leftarrow \alpha E/2.$ In compare with the normal force-displacement relationship for the Q4 element, $Kq=r$, the difference is the introduction of $\alpha E \overline{K},$ which is introduced in order to soften higher order modes of the Q4 element. 
 
 ![Figure 1.](theory/Fig_1.jpg)
 
@@ -51,7 +51,7 @@ The force-displacement relationship for new Q4(\alpha^{*}) element, that is $Q4\
 
 In the current project we want to solve the topology optimisatopn problem for mechanical structures, considering a design domain $Ω$ filled with a linear isotropic elastic material and discretized with square finite elements. The material distribution is described by the binary density variable xj that represents either absence (0) or presence (1) of the material at each point of the design domain. Therefore, the problem has a form almost the same as the problem statement of the minimum complience: $$min_{x}f(x) = \Sigma_{i=1}^{n} E_{i}(x_{i})q_{i}^{T}K_{e}q_{i},$$ $$s.t.\hspace{2 mm} g(x) = \frac{v_{e}}{v_{0}}\Sigma_{i=1}^{n} x_{i} - v_{lim} \le 0,$$ $$Kq = r,$$ $$0 \le x_{i_{lower}} \le x_{i} \le 1, i = 1,2,...,n.$$ As we have already mentoined the problem is computationally expensive due to its discrete nature. And for solving this issue so-called SIMP algorithm is used. It allows to achive the non-binary solutions by choosing Young's modulus of a simple but very efficient form:
 
-$$E_{i}(x_{i}) = E_{min} + x^{p}_{i} (E_{0} − E_{min}),$$ 
+$$E_{i}(x_{i}) = E_{min} + x^{p}_{i}(E_{0} − E_{min}),$$
 
 where $p$ is some form of penalty that will drive the solution to discrete solid-void-values. Then discrete design variables is replaced with continious design variables which could be interpreted as the density of the material.
 
