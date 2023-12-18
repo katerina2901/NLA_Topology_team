@@ -62,6 +62,27 @@ To start training the network you need to run: ```python training_torch.py --dat
 
 In our topology optimization process, it is possible to leverage an already trained unet NN. To implement this, refer to the methods demonstrated in methods_results.ipynb.
 
+## About NN:
+
+*Initial Input Processing (Level 1): 
+ 
+Convolutional Layers (conv1_1, conv1_2): The input data first passes through two convolutional layers. These layers apply filters to the input to extract basic features like edges or textures. Each layer uses a kernel size of 3x3, which means they look at 3x3 pixel areas at a time to create feature maps. 
+*Feature Downsampling and Refinement (Level 2): 
+ 
+Max Pooling Layer (pool2_1): Following the initial convolutional layers, a max pooling layer reduces the spatial dimensions of the feature maps. This operation helps in making the network less sensitive to the exact location of features in the input. 
+Convolutional and Dropout Layers (conv2_1, conv2_2, drop2_1): The network then applies two more convolutional layers interspersed with a dropout layer. The dropout layer randomly sets a portion of the inputs to zero, which helps in preventing overfitting and ensuring that the network does not rely too heavily on any single feature. 
+*Further Feature Extraction and Expansion (Level 3): 
+ 
+*Max Pooling Layer (pool3_1): Another max pooling layer further downsamples the feature maps. 
+Convolutional Layers (conv3_1 to conv3_4): Four consecutive convolutional layers continue to extract and refine features. These layers increase the depth of the network, allowing it to learn more complex patterns. 
+Upsample Layer (up3_1): An upsampling layer is used to increase the spatial dimensions of the feature maps, preparing for feature integration from previous levels. 
+Feature Integration and Reconstruction: 
+ 
+*Concatenation and Convolutional Layers (Level 2 and 1 Revisited): The network then concatenates the upsampled features with feature maps from previous levels (Level 2 and Level 1) and applies additional convolutional layers. This process of concatenation and further convolution allows the network to integrate context from different levels of feature abstraction, which is particularly beneficial in tasks like image segmentation where pixel-level precision is required. 
+Final Output: 
+ 
+*Output Layer (output): The final output is generated through a convolutional layer with a sigmoid activation. This layer typically maps the refined features to the desired output format, such as a probability map in segmentation tasks or a set of class scores in classification tasks.
+
 ## Some of the key methods identified are:
 
 optimization_step: updating the design variables and computing changes.
