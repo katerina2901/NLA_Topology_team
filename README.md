@@ -26,5 +26,5 @@ implement_solution: This method is designed to reapply a solution.
 
 get_history: This function returns the history of previous iterations.
 
-postprocess_history_: This method for post-processing the results of the optimization process, including those derived from a pre-trained grid.
+postprocess_history_: This method for post-processing the results of the optimization process.
 
