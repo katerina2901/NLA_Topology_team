@@ -14,7 +14,7 @@ In order to optain .h5 file: python prepare_data.py --source TOP4040 --dataset-p
 
 To start training the network you need to run: python training_torch.py --dataset-path output_dataset.h5
 
-In our topology optimization process, it is possible to leverage an already trained grid. As shown in methods_results.ipynb, users can utilize a dataset, such as the data stored in output_dataset.h5 from the TOP dataset.To implement this, refer to the methods demonstrated in methods_results.ipynb.
+In our topology optimization process, it is possible to leverage an already trained unet NN. To implement this, refer to the methods demonstrated in methods_results.ipynb.
 
 ## Some of the key methods identified are:
 
