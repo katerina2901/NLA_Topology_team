@@ -7,9 +7,9 @@ Our pipeline for solving the problem: comparison of traditional methods of topol
 We use [TOP dataset](https://github.com/ISosnovik/top) to train the model.
 The dataset of topology optimization process. It contains the precise solutions of 10,000 randomly stated problems. Each object is a tensor of shape `(100, 40, 40)`: 100 iterations, `40×40` grid.
 
-In order to optain .h5 file: python prepare_data.py --source TOP4040 --dataset-path ./output_dataset.h5 
+In order to optain .h5 file: ```python prepare_data.py --source TOP4040 --dataset-path ./output_dataset.h5 ```
 
-To start training the network you need to run: python training_torch.py --dataset-path output_dataset.h5
+To start training the network you need to run: ```python training_torch.py --dataset-path output_dataset.h5```
 
 In our topology optimization process, it is possible to leverage an already trained unet NN. To implement this, refer to the methods demonstrated in methods_results.ipynb.
 
