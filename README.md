@@ -83,6 +83,8 @@ Final Output:
  
 * Output Layer (output): The final output is generated through a convolutional layer with a sigmoid activation. This layer typically maps the refined features to the desired output format, such as a probability map in segmentation tasks or a set of class scores in classification tasks.
 
+![Figure 2.](theory/Fig_2.jpg)
+
 ## Some of the key methods identified are:
 
 optimization_step: updating the design variables and computing changes.
