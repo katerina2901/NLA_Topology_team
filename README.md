@@ -37,7 +37,7 @@ Let's now consider displacement based element. Even though the enforcement of $\
 
 The straining or deformation modes of square Q4 element are shown in Figure 1. The higher order modes are to be blamed for the poor perfomance of this element in bending. For the element, the stresses are obtained from: $$\sigma = Cε = CBq$$ Hence $$\partial \sigma = \partial (CBq) = \overline{B}q$$ The potential energy is constructed then as follow: $$\Pi^{*}(u) = \frac{1}{2}q^{T}\int_{\Omega}B^{T}CB\,d\Omega q - \alpha q^{T}\int_{\Omega}\overline{B}^{T}\overline{B}\,d\Omega q - q^{T}r.$$ The force-displacement relationship for new Q4(\alpha^{*}) element, that is $Q4\alpha 5 \beta$, is then obtained as: $$(K-\alpha E\overline{K})q = r,$$ where $\alpha \leftarrow \alpha E/2.$ In compare with the normal force-displacement relationship for the Q4 element, $Kq=r$, the difference is the introduction of $\alpha E \overline{K},$ which is introduced in order to soften higher order modes of the Q4 element. 
 
-![Figure 1.](Fig_1.jpg)
+![Figure 1.](theory/Fig_1.jpg)
 
 ## Topology optimization
 
