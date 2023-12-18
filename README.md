@@ -10,3 +10,5 @@ The dataset of topology optimization process. It contains the precise solutions 
   year={2017}
 }
 ```
+This is to redo the folder dataset TOP4040 to .h5 extension: python prepare_data.py --source TOP4040 --dataset-path ./output_dataset.h5 
+To start training the network you need to run: python training_torch.py --dataset-path output_dataset.h5
