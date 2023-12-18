@@ -1,6 +1,6 @@
 # Topology optimization process 
 
-In the current project we want to solve the topology optimisatopn problem for mechanical structures. The reference [paper]([https://github.com/ISosnovik/top](https://www.degruyter.com/document/doi/10.1515/rnam-2019-0018/html)) by Ivan Sosnovik and  Ivan Oseledets. 
+In the current project we want to solve the topology optimisatopn problem for mechanical structures. The reference [paper](https://www.degruyter.com/document/doi/10.1515/rnam-2019-0018/html) by Ivan Sosnovik and  Ivan Oseledets. 
 
 Our pipeline for solving the problem: 
 -use SIMP method to perform the initial iterations and get the distribution with non-binary densities; 
