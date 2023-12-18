@@ -2,10 +2,7 @@
 
 In the current project we want to solve the topology optimisatopn problem for mechanical structures. The reference [paper](https://www.degruyter.com/document/doi/10.1515/rnam-2019-0018/html) by Ivan Sosnovik and  Ivan Oseledets. 
 
-Our pipeline for solving the problem: 
--use SIMP method to perform the initial iterations and get the distribution with non-binary densities; 
--use the neural network to perform the segmentation of the obtained image;
--converge the distribution to {0, 1} solution.
+Our pipeline for solving the problem: comparison of traditional methods of topological optimization and methods based on machine learning, attempts to combine these methods.
 
 We use [TOP dataset](https://github.com/ISosnovik/top) to train the model.
 The dataset of topology optimization process. It contains the precise solutions of 10,000 randomly stated problems. Each object is a tensor of shape `(100, 40, 40)`: 100 iterations, `40×40` grid.
