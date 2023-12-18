@@ -1,6 +1,6 @@
 # Topology optimization process 
 
-In the current project we want to solve the topology optimisatopn problem for mechanical structures. The reference paper is https://www.degruyter.com/document/doi/10.1515/rnam-2019-0018/html . 
+In the current project we want to solve the topology optimisatopn problem for mechanical structures. The reference [paper]([https://github.com/ISosnovik/top](https://www.degruyter.com/document/doi/10.1515/rnam-2019-0018/html)) by Ivan Sosnovik and  Ivan Oseledets. 
 
 Our pipeline for solving the problem: 
 -use SIMP method to perform the initial iterations and get the distribution with non-binary densities; 
@@ -28,11 +28,3 @@ get_history: This function returns the history of previous iterations.
 
 postprocess_history_: This method for post-processing the results of the optimization process, including those derived from a pre-trained grid.
 
-```latex
-@article{sosnovik2017neural,
-  title={Neural networks for topology optimization},
-  author={Sosnovik, Ivan and Oseledets, Ivan},
-  journal={arXiv preprint arXiv:1709.09578},
-  year={2017}
-}
-```
