@@ -10,6 +10,6 @@ The dataset of topology optimization process. It contains the precise solutions 
   year={2017}
 }
 ```
-The dataset can be accessed here: https://drive.google.com/file/d/1-hTBz_FRPyjmVxOVMSrCsrbM42UIhf0v/view
+In order to optain .h5 file: python prepare_data.py --source TOP4040 --dataset-path ./output_dataset.h5 
 
 To start training the network you need to run: python training_torch.py --dataset-path output_dataset.h5
