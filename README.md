@@ -64,6 +64,14 @@ To start training the network you need to run: ```python training_torch.py --dat
 
 In our topology optimization process, it is possible to leverage an already trained unet NN. To implement this, refer to the methods demonstrated in methods_results.ipynb.
 
+File methods.py contains three class:
+
+- topology_AAGE describes topology optimization using the SIMP method.
+- NN_topoptimizer describes topology optimization using Unet-topology. Several iterations must first be done using the SIMP method before using this method.
+- Journal is used to draw up the experimental plan. creating an experiment with the entry experiment_1 = Journal(opt_SIMP, opt_NN, simp_start = 10, simp_inc = 4, nn_inc = 6, end = 100) will mean that first 10 iterations will be performed using the SIMP method, then 6 iterations will be performed sequentily using the NN_topoptimizer method, and 4 iterations using the SIMP method until the total number of iterations is greater than 100.
+
+Detailed examples of using methods can be found in methods_results.py.
+
 ### Architecture of NN:
 
 * Initial Input Processing (Level 1): 
