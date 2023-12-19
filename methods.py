@@ -12,6 +12,10 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import math
 
+import time
+
+from scipy.sparse import linalg as sla
+
 
 def lk(E=1, nu=0.3):
     """
@@ -118,6 +122,8 @@ class topology_AAGE:
         print("ndes: " + str(nelx) + " x " + str(nely))
         print("volfrac: " + str(volfrac) + ", rmin: " + str(rmin) + ", penal: " + str(penal))
         print("Filter method: " + ["Sensitivity based","Density based"][ft])
+
+        self.lu_solver = False # if True implememt the lu sparce solver
 
         self.penal = penal
         self.rmin = rmin
@@ -274,6 +280,7 @@ class topology_AAGE:
         """
         The function excute the optimization step.
         """
+        t0 = time.time()    # to measure time
 
         # Setup and solve FE problem
         sK=((self.KE.flatten()[np.newaxis]).T*(self.Emin+(self.xPhys)**self.penal*(self.Emax-self.Emin))).flatten(order='F')
@@ -282,8 +289,15 @@ class topology_AAGE:
         # Remove constrained dofs from matrix
         K = K[self.free,:][:,self.free]
 
-        # Solve system
-        self.u[self.free,0]=spsolve(K,self.f[self.free,0])
+        if self.lu_solver:
+            #Solve system with super LU factorization
+            K = K.tocsr() #  Need CSR for SuperLU factorisation
+            lu = sla.splu(K)
+            self.u[self.free, 0] = lu.solve(self.f[self.free, 0])
+
+        else:
+            # Solve system
+            self.u[self.free,0]=spsolve(K,self.f[self.free,0])
 
         # Objective and sensitivity
         self.ce[:] = (np.dot(self.u[self.edofMat].reshape(self.nelx*self.nely,8),self.KE) * self.u[self.edofMat].reshape(self.nelx*self.nely,8) ).sum(1)
@@ -314,6 +328,10 @@ class topology_AAGE:
         # save iteration index
         self.loop=self.loop+1
 
+        # compute the excution time
+        dt = time.time()-t0
+        self.time_hist.append(dt)
+
     def optimization(self, n_iter, trsh_chang = 0.01, history_step=5):
         """
         The function excutes optimization iterations and saves history.
@@ -329,7 +347,7 @@ class topology_AAGE:
         local_loop = 0
         while local_loop<n_iter: #self.change>trsh_chang and 
             self.optimization_step()
-            print("Iteration N: ", self.loop, "\t optimizer: TopoSIMP \t Objective function value: ", self.obj)
+            print("Iteration N: ", self.loop, "\t optimizer: TopoSIMP \t Objective function value: ", round(self.obj, 2), " Time execution: ", round(self.time_hist[-1], 3))
 
             # save history
             if self.loop%history_step == 0 or local_loop == 0:
@@ -384,8 +402,16 @@ class topology_AAGE:
         # Remove constrained dofs from matrix
         K = K[self.free,:][:,self.free]
 
-        # Solve system
-        u[self.free,0]=spsolve(K,self.f[self.free,0])
+        if self.lu_solver:
+            #Solve system with super LU factorization
+            K = K.tocsr() #  Need CSR for SuperLU factorisation
+            lu = sla.splu(K)
+            u[self.free, 0] = lu.solve(self.f[self.free, 0])
+
+        else:
+            # Solve system
+            u[self.free,0]=spsolve(K,self.f[self.free,0])
+
 
         # Objective and sensitivity
         ce[:] = (np.dot(u[self.edofMat].reshape(self.nelx*self.nely,8),self.KE) * u[self.edofMat].reshape(self.nelx*self.nely,8) ).sum(1)
@@ -672,6 +698,7 @@ class NN_topoptimizer:
         self.loop = 0           # current iteratio index
         self.loop_history = []  # list to save indeces of iteration
         self.obj_hist = []
+        self.time_hist = []
 
     def clear_history(self):
         """
@@ -704,6 +731,7 @@ class NN_topoptimizer:
         computes new x_1 and x_2, saves history 
         """
 
+        t0 = time.time()
         y_pred_ = self.model(self.x).eval()   # predict the next iteration
         x_1 = y_pred_.copy()[0, :, :, 0]  
         # x_1 = x_1*0.999 + 0.001 #rescaling
@@ -722,6 +750,8 @@ class NN_topoptimizer:
         self.x_history.append(y_pred_.copy()[0, :, :, 0].flatten())
         self.loop_history.append(self.loop)
 
+        dt = time.time()-t0
+        self.time_hist.append(dt)
         
 
     def optimization(self, n_iter, obj_func = None):
@@ -738,7 +768,7 @@ class NN_topoptimizer:
                 obj_f_v = obj_func(self.x_history[-1])
                 self.obj_hist.append(obj_f_v)
 
-            print("Iteration N: ", self.loop, "\t optimizer: TopoNN \t Objective function value: ", obj_f_v)
+            print("Iteration N: ", self.loop, "\t optimizer: TopoNN \t Objective function value: ", round(obj_f_v, 2), " Time execution: ", round(self.time_hist[-1], 3))
 
     def get_xPhys(self):
         """
