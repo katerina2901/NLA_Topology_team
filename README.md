@@ -2,6 +2,14 @@
 
 In the current project we want to solve the topology optimisatopn problem for mechanical structures. The reference [paper](https://www.degruyter.com/document/doi/10.1515/rnam-2019-0018/html) by Ivan Sosnovik and  Ivan Oseledets. Our pipeline for solving the problem: comparison of traditional methods of topological optimization and methods based on machine learning, attempts to combine these methods.
 
+File methods.py contains three class:
+
+- topology_AAGE describes topology optimization using the SIMP method.
+- NN_topoptimizer describes topology optimization using Unet-topology. Several iterations must first be done using the SIMP method before using this method.
+- Journal is used to draw up the experimental plan. creating an experiment with the entry experiment_1 = Journal(opt_SIMP, opt_NN, simp_start = 10, simp_inc = 4, nn_inc = 6, end = 100) will mean that first 10 iterations will be performed using the SIMP method, then 6 iterations will be performed sequentily using the NN_topoptimizer method, and 4 iterations using the SIMP method until the total number of iterations is greater than 100.
+
+Detailed examples of using methods can be found in methods_results.py.
+
 ## Minimum complience: problem statement 
 
 The real minimum compliance problem is a distributed, descrete valued design problem, which consists of calculating the complience (the inverse of stiffness) for each possible permutation of the design domain. Thus, if we discretise a 2D domain into X-by-Y mesh of finite elements, and knowing that each element has two possible values (0 and 1), we have $2^{X\times Y}$ possible permutations of the domain. This is extremely expensive to compute: for a small 4-by-4 domain, we have to calculate $2^{4\times 4} = 65536$ possible material designs and evaluate each one in order to find the design's compliance, with each requiring a finite element analysis (FEA). The problem is further compounded in that each FEA becomes computationally more expensive as the domain discretation is increased. 
@@ -63,14 +71,6 @@ In order to optain .h5 file: ```python prepare_data.py --source TOP4040 --datase
 To start training the network you need to run: ```python training_torch.py --dataset-path output_dataset.h5```
 
 In our topology optimization process, it is possible to leverage an already trained unet NN. To implement this, refer to the methods demonstrated in methods_results.ipynb.
-
-File methods.py contains three class:
-
-- topology_AAGE describes topology optimization using the SIMP method.
-- NN_topoptimizer describes topology optimization using Unet-topology. Several iterations must first be done using the SIMP method before using this method.
-- Journal is used to draw up the experimental plan. creating an experiment with the entry experiment_1 = Journal(opt_SIMP, opt_NN, simp_start = 10, simp_inc = 4, nn_inc = 6, end = 100) will mean that first 10 iterations will be performed using the SIMP method, then 6 iterations will be performed sequentily using the NN_topoptimizer method, and 4 iterations using the SIMP method until the total number of iterations is greater than 100.
-
-Detailed examples of using methods can be found in methods_results.py.
 
 ### Architecture of NN:
 
