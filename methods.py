@@ -3,13 +3,15 @@
 from __future__ import division
 import numpy as np
 from scipy.sparse import coo_matrix
-from scipy.sparse.linalg import spsolve
+from scipy.sparse.linalg import spsolve, cg
 from matplotlib import colors
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 import matplotlib.tri as mtri
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+# from pysparse import superlu, itsolvers, precon
+
 import math
 
 import time
@@ -27,7 +29,7 @@ def lk(E=1, nu=0.3):
     return:
         stiffniss matirix - np.array with shape (8, 8) 
     """
-    # E=1 # ! need to synchronize material properties !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # E=1 # ! need to synchronize material properties
     k=np.array([1/2-nu/6,1/8+nu/8,-1/4-nu/12,-1/8+3*nu/8,-1/4+nu/12,-1/8-nu/8,nu/6,1/8-3*nu/8])
     KE = E/(1-nu**2)*np.array([ [k[0], k[1], k[2], k[3], k[4], k[5], k[6], k[7]],
     [k[1], k[0], k[7], k[6], k[5], k[4], k[3], k[2]],
@@ -124,6 +126,7 @@ class topology_AAGE:
         print("Filter method: " + ["Sensitivity based","Density based"][ft])
 
         self.lu_solver = False # if True implememt the lu sparce solver
+        self.it_solver = False # if True implement the iterative sover (need for large number of dof)
 
         self.penal = penal
         self.rmin = rmin
@@ -294,6 +297,11 @@ class topology_AAGE:
             K = K.tocsr() #  Need CSR for SuperLU factorisation
             lu = sla.splu(K)
             self.u[self.free, 0] = lu.solve(self.f[self.free, 0])
+
+        elif self.it_solver: # solving via iteration solver
+            self.u[self.free,0], exit_code = cg(K, self.f[self.free, 0])
+            if exit_code < 0:
+                print("Iteration solver error")
 
         else:
             # Solve system
