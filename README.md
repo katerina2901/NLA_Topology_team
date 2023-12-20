@@ -2,13 +2,13 @@
 
 In the current project we want to solve the topology optimisatopn problem for mechanical structures. The reference [paper](https://www.degruyter.com/document/doi/10.1515/rnam-2019-0018/html) by Ivan Sosnovik and  Ivan Oseledets. Our pipeline for solving the problem: comparison of traditional methods of topological optimization and methods based on machine learning, attempts to combine these methods.
 
-File methods.py contains three class:
+File **methods.py** contains three class:
 
-- topology_AAGE describes topology optimization using the SIMP method.
-- NN_topoptimizer describes topology optimization using Unet-topology. Several iterations must first be done using the SIMP method before using this method.
-- Journal is used to draw up the experimental plan. creating an experiment with the entry experiment_1 = Journal(opt_SIMP, opt_NN, simp_start = 10, simp_inc = 4, nn_inc = 6, end = 100) will mean that first 10 iterations will be performed using the SIMP method, then 6 iterations will be performed sequentily using the NN_topoptimizer method, and 4 iterations using the SIMP method until the total number of iterations is greater than 100.
+- **topology_AAGE** describes topology optimization using the SIMP method.
+- **NN_topoptimizer** describes topology optimization using Unet-topology. Several iterations must first be done using the SIMP method before using this method.
+- **Journal is used** to draw up the experimental plan. creating an experiment with the entry **experiment_1 = Journal(opt_SIMP, opt_NN, simp_start = 10, simp_inc = 4, nn_inc = 6, end = 100)** will mean that first 10 iterations will be performed using the SIMP method, then 6 iterations will be performed sequentily using the NN_topoptimizer method, and 4 iterations using the SIMP method until the total number of iterations is greater than 100.
 
-Detailed examples of using methods can be found in methods_results.py.
+Detailed examples of using methods can be found in **methods_results.py**.
 
 ## Minimum complience: problem statement 
 
